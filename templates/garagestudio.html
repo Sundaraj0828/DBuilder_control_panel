@@ -1,0 +1,23 @@
+{%extends "base.html" %}
+
+
+{% block title %} Door Builder {% endblock %}
+{% block door_builder %}
+
+<!--**********************************
+            Content body start
+        ***********************************-->
+{% if d_style == 'Traditional' %}
+    <script src="{{url_for('static', filename = 'js/masterJS.js')}}" Content-Type="application/javascript"></script>
+    <script src="{{url_for('static', filename = 'js/window_row_selection.js')}}" Content-Type="application/javascript"></script>
+{% elif d_style == 'Speciality' %}
+    <script src="{{url_for('static', filename = 'js/masterJS_fullView.js')}}" Content-Type="application/javascript"></script>
+{% endif %}
+
+
+
+
+<!--**********************************
+            Content body end
+        ***********************************-->
+{% endblock %}
