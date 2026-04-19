@@ -1,0 +1,409 @@
+{% extends "base.html" %}
+
+{% block title %} Door Builder {% endblock %}
+{% block door_builder %}
+
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+
+{% if d_style == 'Traditional' %}    
+    <script src="{{url_for('static', filename = 'js/masterJS.js')}}" Content-Type="application/javascript"></script>    
+    <script src="{{url_for('static', filename = 'js/window_row_selection.js')}}" Content-Type="application/javascript"></script>
+{% elif d_style == 'Speciality' %}
+    <script src="{{url_for('static', filename = 'js/masterJS_fullView.js')}}" Content-Type="application/javascript"></script>
+{% elif d_style == 'Carriage House' %}
+    <script src="{{url_for('static', filename = 'js/masterJS_classica.js')}}" Content-Type="application/javascript"></script>
+{% endif %}
+
+<div class="container-fluid my-2 bg bg-light pb-2 min-vw-50">  
+  
+  <button type="button" class="btn-dark btn-sm editBtn" onclick="openNav()">
+    <h3 class="text-light" style="float: right; padding-top: 5px;">Build your door here</h3>
+  </button>
+
+ 
+  
+  <div id="viewport">    
+    
+    
+    <canvas id="door" class="door_area"> Canvas Not Supported</canvas>
+  </div>
+</div>
+
+<div class="container-fluid">
+
+
+  
+
+  
+  <div class="side_bar bg bg-dark pt-4" id="mySidenav">
+    <div class="container">
+      <button class="closebtn btn btn-danger btn-sm text-dark" onclick="closeNav()">&times;</button>
+      <div class="row bg bg-light pt-2">
+        <div class="col-lg-4 pt-2 ">
+          <div class="form-group">
+            
+            <select class="form-control text-left" id="door_w"> 
+              <option selected>Width</option>
+              {% for w in d_width %}
+              <option value="{{w}}" >{{w}}'</option>
+              {% endfor %}
+            </select>
+
+
+
+          </div>
+        </div>
+
+        <div class="col-lg-5 pt-2">
+          <div class="form-group">
+            <!-- <label for="door_width" class="text-light float-left">Height:</label> -->
+            <select class="form-control text-left" id="door_h" {% if d_style == 'Traditional' %} onchange="window_row();" {% endif %} >
+              <option selected value="">Height</option>
+              {% for h in d_height %}
+                  {% if d_style == 'Carriage House' %}
+                    <option value="{{h}}" >{{h}}"</option>
+                  {% elif d_style == 'Traditional' %}
+                    <option value="{{h}}" >{{h}} ft</option>
+                  {% elif d_style == 'Speciality' %}
+                    <option value="{{h}}" >{{h}} ft</option>
+                  {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="col-lg-2 pt-2">
+          <button class="btn btn-success" type="submit" onclick="draw();">
+            <i class="fa fa-arrows"></i>
+          </button>
+        </div>
+
+      </div>
+      <div class="row">
+
+        <div class="col-12 pt-2">
+
+          <div class="form-group">
+            <label for="panels" class="text-light float-left">Select Panel:</label>
+            <select class="form-control btn btn-light text-left" id="panels" onchange="draw();">
+
+              <option value=''>Select panel</option>
+              {% for p in d_panels %}
+                <option value='{{p}}'>{{p}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+
+        <div class="col-12 pt-2" style="display: none;" id="flush_p">
+            <div class="form-group">
+              <label for="flush_panels" class="text-light float-left">Select panel option:</label>
+              <select class="form-control btn btn-light text-left" id="flush_panels" onchange="draw();">  
+                  <option value="">Select panel option</option>
+                  <option value="Short_p">Short Panel</option>
+                  <option value="Long_p">Long Panel</option>
+              </select>
+            </div>
+        </div>
+
+        
+
+        <div class="col-12 pt-2">
+          <div class="form-group">
+                  <label for="colors" class="text-light float-left">Select colors:</label>
+                  <select class="form-control btn btn-light text-left" id="colors" onchange="draw();"  >
+                      <option value=''>Select color</option>
+                      {% if d_style == 'Traditional' %}
+                          <option value="#DADCD4" selected style="background:#DADCD4; " >True White</option>
+                          <option value="#F3DFC6" style="background: #F3DFC6; ">Almond</option> 
+                          <option value="#A29788" style="background: #A29788;">Sandtone</option>
+                          <option value="#422B19" style="background: #422B19; color: #ddd;">Dark Brown</option>
+                          <option value="#3E4A46" style="background: #3E4A46; color: #ddd; ">Hunter Green</option>
+                          <option value="#181818" style="background: #181818; color: #ddd;">Black</option>
+                          <option value="#fc8403" style="background: #fc8403; ">Orange</option>
+                          <option value="#94fc03" style="background: #94fc03;">Light Green</option>
+                      {% elif d_style == 'Speciality' %}
+                          <option value="#babfb9" style="background: #babfb9;" selected >Anodized Clear</option>
+                          <option value="#897856" style="background: #897856;">Anodize Champagne</option>                  
+                          <option value="#926f5c" style="background: #926f5c;">Anodize Copper</option> 
+                          <option value="#64543e" style="background: #64543e; color: #fff;">Anodize Medium bronze </option>
+                          <option value="#25241f" style="background: #25241f; color: #fff;">Anodize Black</option>
+                         
+                          <option value="#f6f5ec" style="background: #f6f5ec;">Bone White</option>
+                          <option value="#dddde0" style="background: #dddde0;">White</option>
+                          <option value="#dedfc6" style="background: #dedfc6; ">Ivory</option>
+                          <option value="#ccc2b1" style="background: #ccc2b1; ">Sandstone </option>
+                          <option value="#eee5c3" style="background: #eee5c3; ">Burnt sun </option>
+                          <option value="#a6977e" style="background: #a6977e;">Sierra Tan</option>
+
+                          <option value="#cdbdab" style="background: #cdbdab;">Beige</option>
+                          <option value="#aca593" style="background: #aca593;">Light Seawolf Beige</option>
+                          <option value="#a8adac" style="background: #a8adac;">Dove Gray</option>
+                          <option value="#7c7b75" style="background: #7c7b75; color: #fff;">Slate Gray</option>
+                          <option value="#3a4248" style="background: #3a4248; color: #fff;">Charcoal Gray</option>
+                          <option value="#423b35" style="background: #423b35; color: #fff">Anodize Dark Bronze</option>
+
+                          <option value="#849177" style="background: #849177; color: #fff;">Patina Green</option>
+                          <option value="#406653" style="background: #406653; color: #fff;">Dark Ivy</option>
+                          <option value="#2a3b35" style="background: #2a3b35; color: #fff;">Hartford Green</option>
+                          <option value="#6a8292" style="background: #6a8292; color: #fff;">Military Blue</option>
+                          <option value="#244f6f" style="background: #244f6f; color: #fff;">Interstate Blue</option>
+
+                          <option value="#6a3837" style="background: #6a3837; color: #fff;">Colonial Red</option>
+                          <option value="#4d3538" style="background: #4d3538; color: #fff;">Boysenberry</option>
+                          <option value="#62564d" style="background: #62564d; color: #fff;">Sage Brown</option>
+                          <option value="#37312d" style="background: #37312d; color: #fff;">Quaker Bronze</option>
+                          <option value="#232323" style="background: #232323; color: #fff;">Super Black</option>                          
+                          <option value="#a6222a" style="background: #a6222a; color: #fff;">Carnival Red II</option>
+                      {% elif d_style == 'Carriage House' %}  
+                          <option value="#DADCD4" selected style="background:#DADCD4; " >True White</option>
+                          <option value="#F3DFC6" style="background: #F3DFC6; ">Almond</option>
+                          <option value="#ADA590" style="background: #ADA590; ">Wicker Tan</option>
+                          <option value="#A29788" style="background: #A29788;">Sandtone</option>
+                          <option value="#746A60" style="background: #746A60; color: #ddd;">Terratone</option>
+                          <option value="#60605E" style="background: #60605E; color: #ddd;">Charcoal Gray</option>
+                          <option value="#422B19" style="background: #422B19; color: #ddd;">Dark Brown</option>
+                          <option value="#181818" style="background: #181818; color: #ddd;">Black</option>
+                      {% else %}
+                          <option value="#DADCD4" selected style="background:#DADCD4; " >True White</option>
+                      {% endif %}
+                  </select>
+                </div>
+
+
+        </div>
+
+        <div class="col-12 pt-2">
+          <div class="form-group">
+            <label for="glassType" class="text-light float-left">Select Glass type:</label>
+            <select class="form-control btn btn-light text-left" id="glassType" onchange="draw();" >
+              {% if d_style == 'Traditional' %}
+              <optgroup id="trad_glasstype" label="Traditional Glass types">
+                <option value="closed" selected >Closed - No Window</option>
+                <option value="clear">Clear</option>
+                <option value="frost" >Frost</option>
+                <option value="dark_tint">Dark Tint</option>
+                </optgroup>
+              {% elif d_style == 'Speciality' %}
+              <optgroup id="Speciality_glasstype" label="Speciality Glass types">
+                <option value="closed">Closed - No Window</option>
+                <option value="clear" >Clear</option>
+                <option value="frost" selected>Frost</option>
+                <option value="grey" >Grey</option>
+                <option value="bronze" >Bronze</option>
+                <option value="green" >Green</option>
+                <option value="whiteout" >Whiteout</option>
+                <option value="dark_tint">Dark Tint</option>
+                
+                <option value="snow" >Snow</option>
+                <option value="thermapro" >Thermapro Low-E</option>
+              </optgroup>
+              {% elif d_style == 'Carriage House' %}    
+              <optgroup id="carr_house_glassType" label="Carriage House Glass types"  >
+                <option value="closed" selected >Closed - No Window</option>
+                <option value="clear">Clear</option>
+                <option value="frost" >Frost</option>
+                <option value="dark_tint">Dark Tint</option>
+              </optgroup>          
+              {% endif %}
+            </select>
+          </div>
+          
+
+
+        </div>
+
+
+
+
+        {% if d_style == 'Traditional' %}
+        <div class="col-8 pt-2">
+          <div class="form-group">
+            <label for="sel1" class="text-light float-left">Select Window & row:</label>
+            <select class="form-control btn btn-light text-left" id="window" onchange="draw();">
+              <option value=''>Select window</option>
+              <optgroup id="longPanels" label="Long Panel">
+                 <option value="lp_clear">Long Panel Clear</option>
+                <!--<option value="lp_frost">Long Panel Frost</option>
+                <option value="dark_tint">Long Panel Dark Tint</option> -->
+                <option value="lpww">Long Panel Wagon Wheel</option>
+                <option value="lpml">Long Panel Moonlite</option>
+                <option value="ctdl">Long Panel Cathedral</option> 
+                <option value="stktn">Long Panel Stockton</option>
+                <option value="prr">Long Panel Prairie</option>
+                <option value="wtrfd">Long Panel Waterford</option>
+                <option value="cascade">Long Panel Cascade</option>
+                <option value="arch_thm">Long Panel Arched Thames</option>
+                <option value="thames">Long Panel Thames</option>
+                <option value="sunray">Long Panel sunray</option>
+              </optgroup>
+              <!-- <optgroup id="lp_decraglasses" label="Long Panel Decra Glasses">
+                <option value=''>Select DecraGlass</option>
+                <option value="lpvictorian">Long Panel Victorian</option>
+                <option value="lpriviera">Long Panel Riviera</option>
+                <option value="lpchalet">Long Panel Chalet</option>
+                <option value="lpamericana">Long Panel Americana</option>
+                <option value="lpheartland">Long Panel Heartland</option>
+                <option value="lpmission">Long Panel Mission</option>
+                <option value="lpprairie">Long Panel Prairie</option>
+                <option value="lpjardin">Long Panel Jardin</option>
+                <option value="lptrellis">Long Panel Trellis</option>
+              </optgroup> -->
+              <optgroup id="shortPanels" label="Short Panel">
+                
+                <option value="sp_clear">Short Panel Clear</option>
+                <!-- <option value="sp_darkTint">Short Panel DarkTint</option>
+                <option value="sp_frost">Short Panel Frost</option> -->
+                <option value="sp_stockton">Short Panel Stockton</option>
+                <option value="sp_prairie">Short Panel Prairie</option>
+                <option value="sp_cascade">Short Panel Cascade</option>
+                <option value="sp_waterford">Short Panel Waterford</option>
+                <option value="sp_cathedral">Short Panel Cathedral</option>
+                <option value="sp_wagonWheel">Short Panel Wagon Wheel</option>
+                <option value="sp_sunray">Short Panel Sunray</option>
+              </optgroup>
+              <!-- <optgroup id="sp_decraglasses" label="Short Panel Decra Glasses">
+                <option value="victorian">Short Panel Victorian</option>
+                <option value="riviera"> Short Panel Riviera</option>
+                <option value="chalet">Short Panel Chalet</option>
+                <option value="americana">Short Panel Americana</option>
+                <option value="heartland">Short Panel Heartland</option>
+                <option value="mission">Short Panel Mission</option>
+                <option value="prairie">Short Panel Prairie</option>
+                <option value="jardin">Short Panel Jardin</option>
+                <option value="trellis">Short Panel trellis</option>
+              </optgroup> -->
+
+            </select>
+          </div>
+        </div>
+
+        <div class="col-4 pt-2">
+          <div class="form-group">
+            <label for="sel1" class="text-light float-left">&nbsp;</label>
+            <select class="form-control btn btn-light text-left" id="win_row" onchange="draw();">
+              <optgroup id="w_row" label="rows">
+                <option value='' class="text-left">Select Row</option>
+              </optgroup>
+            </select>
+          </div>
+        </div>
+        
+        <div class="col-12 pt-2">
+
+          <div class="form-group">
+            <label for="sel1" class="text-light float-left">Decorative Hardware:</label>
+            <select class="form-control btn btn-light text-left" id="hardware" name="hardware" onchange="draw();">
+
+              <option value=''>Select Hardware</option>
+              <optgroup label="Handles" id="Handles">
+                <option value="Alpine_Lock">Alpine 11” Handles</option>
+                <option value="Maple_Creek">Maple Creek Handles</option>
+                <option value="Versailles">Versailles 9” Handles</option>
+                <option value="Blue_Ridge">Blue Ridge 11” Handles</option>
+                <option value="Canterbury">Canterbury 10.5” Handles</option>
+                <option value="Canterbury_Ring">Canterbury 3.5” Ring Handles</option>
+                <option value="Nottingham_Ring">Nottingham Handles</option>
+                <option value="Nottingham_Ring_B">Nottingham Handles with Backer Plate</option>
+                <option value="Castlerock">Castle Rock Handles</option>
+              </optgroup>
+              <optgroup label="strap" id="Strap">
+                <option value="Blue_Ridge">Blue Ridge 11” Handles and Blue Ridge 16” Strap Hinge</option>
+                <option value="Alpine_Lock">Alpine 11” Handles and Blue Ridge 16” Strap Hinge</option>
+                <option value="Versailles">Versailles 9” Handles and Versailles 18” Hinge</option>
+                <option value="Canterbury">Canterbury 10.5” Handles and Canterbury 17” Hinge</option>
+                <option value="Canterbury_Ring">Canterbury 3.5” Ring Handles and Canterbury 17” Hinge</option>
+                <option value="Maple_Creek">Maple Creek Handles and Hinges</option>
+                <option value="Nottingham_Ring_B">Nottingham Handles with Backer Plate Hinges</option>
+                <option value="Nottingham_Ring">Nottingham Handles with Hinges</option>
+                <option value="Castlerock">Castle Rock Handles and Hinges</option>
+                <option value="Versailles_L">Versailles 9” Handles and Versailles 11” L Hinge</option>
+              </optgroup>
+              <optgroup label="lock" id="lock">
+                <option value="">No Locks avaiable</option>
+              </optgroup>
+
+
+            </select>
+          </div>
+        </div>
+
+        {% elif d_style == 'Speciality' %}
+        <div class="col-12 pt-2">
+
+          <div class="form-group">
+            <label for="sel1" class="text-light float-left">Decorative Hardware:</label>
+            <select class="form-control btn btn-light text-left" id="hardware" name="hardware" onchange="draw();">
+
+              <option value=''>Select Hardware</option>
+              <!-- <option value="Alpine_Lock">Alpine 11” Handles</option> -->
+
+
+            </select>
+          </div>
+        </div>
+
+
+        {% elif d_style == 'Carriage House' %}
+        <div class="col-12 pt-2">
+          <div class="form-group">
+            <label for="sel1" class="text-light float-left">Select Window:</label>
+            <select class="form-control btn btn-light text-left" id="classicaWindows" onchange="draw();">
+              <option value='' selected>Select window</option>
+              <optgroup id="classica_windows" label="closed Windows">
+                <option value="closed square" selected>Closed Square</option>
+                <option value="closed arch">Closed Arch</option>
+              </optgroup>
+                <optgroup id="classica_glazed_windows" label="Glazed Windows">
+                 <option value="clear">Clear</option> 
+                 <option value="madeira">Madeira</option> 
+                 <option value="nile">Nile</option> 
+                 <option value="thames">Thames</option> 
+                 <option value="danube">Danube</option>
+                 <option value="rhine">Rhine</option>
+                 <option value="seine">Seine</option>
+                               
+              </optgroup>
+            </select>
+          </div>
+        </div>
+        {% endif %}
+
+
+
+
+
+      </div>
+
+    </div>
+
+  </div>
+
+  
+</div>
+
+
+
+
+<!-- Optional JavaScript -->
+<script>
+  function openNav() {
+    document.getElementById("mySidenav").style.top = "0em";
+    document.getElementById("mySidenav").style.right = "1em";
+  }
+
+  function closeNav() {
+    document.getElementById("mySidenav").style.top = "-50em";
+    document.getElementById("mySidenav").style.right = "1em";
+  }
+</script>
+
+
+
+
+
+
+
+
+{% endblock %}
