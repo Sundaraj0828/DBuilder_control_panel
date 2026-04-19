@@ -1,0 +1,249 @@
+{% extends "index.html" %}
+
+{% block title %}Add Properties{% endblock %}
+{% block add_properties %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<div class="container my-4">
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div id="test" class="text text-info"></div>
+        
+            <div class="card-deck mb-4">
+
+                <!-- width -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Width</h5>
+                        <form class="form-horizontal" method="POST" action="/add_width/d-width">
+                            <div class="input-group mb-3">                                
+                                <input type="number" class="form-control" placeholder="ft" id="width_ft" name="width_ft" min="8" required>
+                                <input type="number" class="form-control" placeholder="inch" id="width_inch" name="width_inch" min="0" max="12" value="0" required>
+                                <div class="input-group-prepend" id="button-addon3">
+                                    <button class="btn btn-success" type="submit">Add</button>    
+                                </div>                                
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-body">                        
+                        <h6>Door Widths</h6>                        
+                        {% for item in door_properties['door_width'] %}
+                                <form class="form-horizontal" method="POST" action="">                                    
+                                    <p class="item_lists rounded">{{item['ft']}}' {{item['inch']}}"<button class="float-right text-right btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-o"></i></button></p>
+                                </form>
+                        {% endfor %}  
+                    </div>
+                </div>
+
+                <!-- Height -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Height</h5>
+                        <form class="form-horizontal" method="POST" action="/add_width/d-height">
+                            <div class="input-group mb-3">                                
+                                <input type="number" class="form-control" placeholder="ft" id="height_ft" name="height_ft" min="6" required>
+                                <input type="number" class="form-control" placeholder="inch" id="height_inch" name="height_inch" min="0" max="12" value="0" required>
+                                <div class="input-group-prepend" id="button-addon3">
+                                    <button class="btn btn-success" type="submit">Add</button>    
+                                </div>                                
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-body">                        
+                        <h6>Door Height</h6>                        
+                        {% for item in door_properties['door_height'] %}
+                                <form class="form-horizontal" method="POST" action="">                                    
+                                    <p class="item_lists rounded">{{item['ft']}}' {{item['inch']}}"<button class="float-right text-right btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-o"></i></button></p>
+                                </form>
+                        {% endfor %}  
+                    </div>
+                </div>
+
+
+                <!-- type -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Door Type</h5>
+                        <form class="form-horizontal" method="POST" action="/add_type">
+                            <div class="input-group mb-3">                        
+                                <input type="text" class="form-control" placeholder="Door Options" name="d_type">
+                                <div class="input-group-append" >
+                                    <button class="btn btn-success" type="submit">Add</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-body">
+                        
+                        <h6>Door Types</h6>
+                      
+                        
+                           
+                        <form class="form-horizontal d-none" method="POST" action="">
+                            <p class="item_lists rounded"><button class="float-right text-right btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-o"></i></button></p>
+                        </form>
+                            
+                    </div>
+                </div>
+
+
+                <!-- panel -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Stamp Design</h5>
+                        <form class="form-horizontal" method="POST" action="/add_panels">
+                            <div class="input-group mb-3">                        
+                                <input type="text" class="form-control" placeholder="Door Panels" name="d_panel">
+                                <div class="input-group-append" >
+                                    <button class="btn btn-success" type="submit">Add</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-body">
+                        
+                        <h6>Door Panels</h6>
+                        
+                        
+                        
+                           
+                    </div>
+                </div>
+
+                <!-- Color -->
+                
+            </div>
+        
+            
+            <div class="card-deck mb-3">
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Door Colors</h5>                        
+                        <form class="form-horizontal" method="POST" action="/add_color">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Door Colors" name="d_color">
+                                <div class="input-group-append rounded">
+                                    <button class="btn btn-success" type="submit">Add</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-body">
+                        
+                        <h6>Door Colors</h6>
+                                <form class="form-horizontal d-none" method="POST" action="">
+                                    <p class="item_lists rounded"><button class="float-right text-right btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-o"></i></button></p>
+                                </form>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Windows</h5>                        
+                        <form class="form-horizontal" method="POST" action="/add_window">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Door Windows" name="door_win">
+                            <div class="input-group-append">
+                                <button class="btn btn-success" type="submit">Add</button>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                    <div class="card-body">
+                        
+                        <h6>Door Windows</h6>
+                                <form class="form-horizontal d-none" method="POST" action="">
+                                    <p class="item_lists rounded"><button class="float-right text-right btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-o"></i></button></p>
+                                </form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Hardwares</h5>                        
+                        <form class="form-horizontal" method="POST" action="/add_hardware">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Decorative Hardwares" name="deca_hw">
+                            <div class="input-group-append">
+                                <button class="btn btn-success" type="submit">Add</button>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                    <div class="card-body">
+                        
+                        <h6>Decorative Hardwares</h6>
+
+                                <form class="form-horizontal d-none" method="POST" action="">
+                                    <p class="item_lists rounded"><button class="float-right text-right btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-o"></i></button></p>                   
+                                </form>
+                        
+                    </div>
+                </div>
+            </div>    
+            
+        </div>
+    
+    <!-- <div class="col-lg-6">
+        <div id="testArea">
+            <h4>Test data area</h4>
+            <hr>
+            {%for d in data %}
+                {% for o in d %}
+                    {{o}}
+                {% endfor %}
+            {% endfor %}
+           
+          </div>
+    </div>
+    <div class="col-lg-6">
+        <div id="testArea2">
+            <h4>Test data area 2</h4>
+            <hr>
+           
+          </div>
+    </div> -->
+    
+
+</div>
+
+
+
+<script type="text/javascript">
+    $('#addSize').click(function(event){
+        event.preventDefault();
+   
+        var w = $('#door_width').val();
+        var h = $('#door_height').val();
+
+        console.log(w, ' * ', h);
+
+        
+    })
+</script>
+
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+(function () {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  var forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
+</script>
+
+{% endblock %}

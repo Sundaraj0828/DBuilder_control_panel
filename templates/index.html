@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Control Panel - {% block title %}{% endblock %}</title>
+
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- <style>
+            @-ms-viewport{
+                width: device-width;
+            } 
+        </style> -->
+
+        <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+        
+
+        
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+
+        <script src="{{url_for('static', filename = 'js/master.js')}}"></script>
+
+        
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+          <a class="navbar-brand text text-info" href="#">Control Panel</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                <a class="nav-link" href="{{url_for('index')}}">Home <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('Item_Entry')}}" id="item_entry">Item Entry</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('create_doorModel')}}">Create a Door</a>  
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <div class="container justify-content-md-center d-flex align-items-center justify-content-center " >
+          {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                  {% for category, message in messages %}
+                      {% if category == 'error' %} 
+                        {% set category = 'danger' %}
+                      {% endif %}
+                      
+                      <!-- The Modal -->
+                      <div class="modal fade" id="myModal">
+                        <div class="modal-dialog modal-dialog-centered">
+                          <div class="modal-content">
+                          
+                            
+                              
+                            
+                            <!-- Modal body -->
+                            <div class="modal-body text-{{category}}">
+                              <button type="button" class="close text-{{ category }}" data-dismiss="modal">&times;</button>
+                              {{ message }}
+                            </div>
+                            
+                            
+                            
+                          </div>
+                        </div>
+                      </div>
+                  {% endfor %}
+              {% endif %}
+          {% endwith %}
+        </div>
+
+        {% block home %} {% endblock %}
+        {% block add_properties %}{% endblock %}
+        {% block door_model %} {% endblock %}
+        {% block modelConfig %} {% endblock %}
+
+        
+
+
+    <script>
+
+      
+    </script>
+        
+   
+      
+    </body>
+</html>

@@ -1,0 +1,165 @@
+<!-- door models -->
+                <!-- <div class="card ">
+                    <div class="card-header">
+                        <h5 class="card-title">Add Door Models</h5>
+                        <form class="form-horizontal" method="POST" action="/add_door_model">
+                            <div class="input-group mb-3">                        
+                                <input type="text" class="form-control" placeholder="Door Model" id="door_model" name="door_model">
+                                <div class="input-group-append">
+                                    <button class="btn btn-success" type="submit">Add</button>
+                                </div> 
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-body">                
+                        <h6>Door Models</h6>
+                        
+                            {% for u in all_doorModels %}
+                                <form class="form-horizontal" method="POST" action="/delete_door_model/{{u['model_name']}}">
+                                    <p class="item_lists rounded">{{u['model_name']}}<button class="float-right text-right btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-o"></i></button></p>
+                                </form>
+                            {% endfor %}  
+                    </div>
+                </div> -->
+
+
+
+
+
+
+
+
+
+                {% for sizes in all_data['door_sizes'] %}
+                {% for s in sizes %}
+                
+                <form class="form-horizontal" method="POST" action="/delete_door_size/{{s['size_id']}}">
+                    <p class="item_lists rounded">{{s['d_width']}} X {{s['d_height']}} <button class="float-right text-right btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-o"></i></button></p>
+                </form>
+                {% endfor %}
+            {% endfor %} 
+
+
+
+
+
+
+
+
+
+
+                <!-- {% for t in all_field_datas['door_options'] %}
+                                <form class="form-horizontal" method="POST" action="/delete_door_type/{{t['doorType_id']}}">
+                                    <p class="item_lists rounded">{{t['door_type']}}<button class="float-right text-right btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-o"></i></button></p>
+                                </form>
+                            {% endfor %} -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <!-- {% for p in all_field_datas['door_panel'] %}
+                                <form class="form-horizontal" method="POST" action="/delete_door_panel/{{p['doorPanel_id']}}">
+                                    <p class="item_lists rounded">{{p['door_panel']}}<button class="float-right text-right btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-o"></i></button></p>
+                                </form>
+                            {% endfor %} -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <!-- {% for c in all_field_datas['door_color'] %}
+                                <form class="form-horizontal" method="POST" action="/delete_color/{{c['doorColor_id']}}">
+                                    <p class="item_lists rounded">{{c['door_color']}}<button class="float-right text-right btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-o"></i></button></p>
+                                </form>
+                                {% endfor %} -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                <!-- {% for w in all_field_datas['door_window'] %}
+                                <form class="form-horizontal" method="POST" action="/delete_window/{{w['window_id']}}">
+                                    <p class="item_lists rounded">{{w['door_window']}}<button class="float-right text-right btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-o"></i></button></p>
+                                </form>
+                            {% endfor %} -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- {% for h in all_field_datas['door_hardware'] %}
+                                <form class="form-horizontal" method="POST" action="/delete_window/{{h['hw_id']}}">
+                                    <p class="item_lists rounded">{{h['deco_hardware']}}<button class="float-right text-right btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-o"></i></button></p>                   
+                                </form>
+                            {% endfor %} -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            console.log(response.data);
+                document.querySelector("#test_123").innerHTML = JSON.stringify(jsonfile, null, 2);

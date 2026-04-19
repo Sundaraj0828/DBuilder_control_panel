@@ -1,0 +1,51 @@
+{% extends "index.html" %}
+
+{% block title %}Create Door Model{% endblock %}
+{% block door_model %} 
+
+
+<div class="container my-4">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="jumbotron">
+                <h5>Welcome to</h5> 
+                <h1>Garage Door Studio</h1>
+            </div>
+
+            <div >
+                <div class="col-lg-4 bg bg-dark text-light rounded float-left py-3">
+                    <h5>Add Door Models</h5>
+                    <form class="form-horizontal" method="POST" action="/configure_door_model">
+                        <div class="form-group mb-3">                        
+                            <input type="text" class="form-control" placeholder="Door Model" id="door_model" name="door_model">                                
+                        </div>
+                        <button class="btn btn-success" type="submit">Create Door Model</button>
+                    </form>
+
+                    
+                </div>
+                <div class="col-lg-8 float-left">
+                    <div class="row ml-1">
+                        
+                        <h5 class="col-lg-12 bg bg-dark p-3 rounded text-light">Door Models</h5>
+                        {% for u in all_doorModels %}
+                        <div class="col-lg-12 border rounded pt-2">
+                            <p class="float-left">
+                                {{u['model_name']}}
+                            </p>
+                            
+                            <form class="form-horizontal float-right " method="POST" action="/delete_door_model/{{u['model_name']}}">
+                                <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-o"></i></button>
+                            </form>
+                            <form class="form-horizontal float-right mr-2" method="POST" action="edit_door_model/{{u['model_name']}}">
+                                <button class="btn btn-info btn-sm" type="submit"><i class="fa fa-pencil-square-o"></i></button>
+                            </form>
+                        </div>
+                        {% endfor %} 
+                    </div>
+                </div>
+            </div>
+
+            
+
+{% endblock %}
